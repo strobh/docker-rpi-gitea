@@ -85,14 +85,14 @@ RUN mkdir /gitea-docker \
     && git config core.sparseCheckout true \
     && echo "docker/" >> .git/info/sparse-checkout \
     && git pull origin master \
-    && rsync -av /gitea-docker/docker/ / \
+    && rsync -av /gitea-docker/docker/root/ / \
     && rm -rf /gitea-docker
 
 # Get gitea and verify signature
 RUN mkdir -p /app/gitea \
     && gpg --keyserver keyserver.ubuntu.com --recv 7C9E68152594688862D62AF62D9AE806EC1592E2 \
-    && curl -sLo /app/gitea/gitea https://github.com/go-gitea/gitea/releases/download/v${BUILD_VERSION}/gitea-${BUILD_VERSION}-linux-arm-7 \
-    && curl -sLo /app/gitea/gitea.asc https://github.com/go-gitea/gitea/releases/download/v${BUILD_VERSION}/gitea-${BUILD_VERSION}-linux-arm-7.asc \
+    && curl -sLo /app/gitea/gitea https://github.com/go-gitea/gitea/releases/download/v${BUILD_VERSION}/gitea-${BUILD_VERSION}-linux-arm-6 \
+    && curl -sLo /app/gitea/gitea.asc https://github.com/go-gitea/gitea/releases/download/v${BUILD_VERSION}/gitea-${BUILD_VERSION}-linux-arm-6.asc \
     && gpg --verify /app/gitea/gitea.asc /app/gitea/gitea \
     && chmod 0755 /app/gitea/gitea \
     && ln -s /app/gitea/gitea /usr/local/bin/gitea \
