@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.13
 LABEL maintainer="developer@tobias-heckel.de"
 
 # Build arguments need to be passed to `docker build` with `--build-arg KEY=VALUE`
@@ -59,7 +59,6 @@ RUN addgroup \
 
 # Install build dependencies (will be deleted from the image after the build)
 RUN apk --no-cache --virtual .build-deps add \
-    gnupg \
     rsync
 
 # Install dependencies
@@ -74,6 +73,7 @@ RUN apk --no-cache add \
     s6 \
     sqlite \
     su-exec \
+    gnupg \
     tzdata
 
 # Pull docker files (sparse checkout: https://stackoverflow.com/a/13738951),
