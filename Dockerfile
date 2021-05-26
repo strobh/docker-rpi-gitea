@@ -1,4 +1,4 @@
-FROM alpine:3.13
+FROM alpine:3.12
 LABEL maintainer="developer@tobias-heckel.de"
 
 # Build arguments need to be passed to `docker build` with `--build-arg KEY=VALUE`
@@ -84,9 +84,14 @@ RUN mkdir /gitea-docker \
     && git remote add -f origin https://github.com/go-gitea/gitea.git \
     && git config core.sparseCheckout true \
     && echo "docker/" >> .git/info/sparse-checkout \
-    && git pull origin master \
+    && git pull --ff-only origin main \
     && rsync -av /gitea-docker/docker/root/ / \
     && rm -rf /gitea-docker
+
+# Edit /etc/templates/sshd_config
+# Remove `ssh-rsa` algorithm from option `CASignatureAlgorithms`
+# This algorithm was removed in OpenSSH 8.2
+RUN sed '/^CASignatureAlgorithms/s/,ssh-rsa//' /etc/templates/sshd_config > /etc/templates/sshd_config.tmp && mv /etc/templates/sshd_config.tmp /etc/templates/sshd_config
 
 # Get gitea and verify signature
 RUN mkdir -p /app/gitea \
