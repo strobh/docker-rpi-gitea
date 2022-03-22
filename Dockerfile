@@ -100,7 +100,7 @@ RUN mkdir -p /app/gitea \
     && curl -sLo /app/gitea/gitea.asc https://github.com/go-gitea/gitea/releases/download/v${BUILD_VERSION}/gitea-${BUILD_VERSION}-linux-arm-6.asc \
     && gpg --verify /app/gitea/gitea.asc /app/gitea/gitea \
     && chmod 0755 /app/gitea/gitea \
-    && ln -s /app/gitea/gitea /usr/local/bin/gitea \
+    && ln -fns /app/gitea/gitea /usr/local/bin/gitea \
     && rm -rf /root/.gnupg
 
 # Delete build dependencies
